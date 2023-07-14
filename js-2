@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Solar System Animation</title>
+  <style>
+    canvas {
+      border: 1px solid black;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="solar-system" width="500" height="500"></canvas>
+
+  <script>
+    const canvas = document.getElementById('solar-system');
+    const ctx = canvas.getContext('2d');
+
+    const sun = {
+      x: canvas.width / 2,
+      y: canvas.height / 2,
+      radius: 50,
+      color: 'yellow',
+      draw: function() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        ctx.fillStyle = this.color;
+        ctx.fill();
+        ctx.closePath();
+      }
+    };
+
+    const earth = {
+      x: canvas.width / 2,
+      y: canvas.height / 2,
+      radius: 20,
+      color: 'blue',
+      distance: 150,
+      angle: 0,
+      speed: 0.02,
+      draw: function() {
+        ctx.beginPath();
+        const x = this.x + Math.cos(this.angle) * this.distance;
+        const y = this.y + Math.sin(this.angle) * this.distance;
+        ctx.arc(x, y, this.radius, 0, Math.PI * 2);
+        ctx.fillStyle = this.color;
+        ctx.fill();
+        ctx.closePath();
+      },
+      update: function() {
+        this.angle += this.speed;
+      }
+    };
+
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      sun.draw();
+      earth.draw();
+    }
+
+    function update() {
+      earth.update();
+    }
+
+    function animate() {
+      requestAnimationFrame(animate);
+      draw();
+      update();
+    }
+
+    animate();
+  </script>
+</body>
+</html>
